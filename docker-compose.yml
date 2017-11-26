@@ -1,0 +1,29 @@
+version: '2'
+
+networks:
+  wan:
+    external: true
+  domoticz:
+
+services:
+  server:
+    image: ${DOMOTICZ_IMAGE}
+    networks:
+      - wan
+      - domoticz
+    ports:
+      - "${DOMOTICZ_PORT}:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./data/config:/config
+      - ./data/scripts/lua:/domoticz/scripts/lua
+      - ./data/scripts/actions:/domoticz/scripts/actions
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=domoticz"
+      - "traefik.docker.network=wan"
+      - "traefik.port=${DOMOTICZ_PORT}"
+      - "traefik.frontend.rule=Host:${HOSTNAME}"
+      - "traefik.frontend.auth.basic=${AUTH}"
+    privileged: true
+    restart: always
