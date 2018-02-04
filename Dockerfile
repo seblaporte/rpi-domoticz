@@ -29,6 +29,11 @@ RUN cd /domoticz/plugins && \
     . /domoticz/plugins/xiaomi-mirobot/.env/bin/activate && \
     pip3 install -r pip_req.txt
 
+# Installation de iSamsungTV
+RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
+    chmod +x iSamsungTV && \
+    mv iSamsungTV /usr/local/bin/
+
 # HTTP port (web interface)
 EXPOSE 8080
 
