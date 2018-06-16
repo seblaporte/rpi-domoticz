@@ -1,4 +1,6 @@
-FROM resin/rpi-raspbian
+FROM resin/armv7hf-debian-qemu
+
+RUN [ "cross-build-start" ]
 
 RUN apt-get update && \
     apt-get install -y  nano \
@@ -33,6 +35,8 @@ RUN cd /domoticz/plugins && \
 RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
     chmod +x iSamsungTV && \
     mv iSamsungTV /usr/local/bin/
+
+RUN [ "cross-build-end" ]
 
 # HTTP port (web interface)
 EXPOSE 8080
