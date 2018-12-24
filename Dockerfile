@@ -3,7 +3,7 @@ FROM resin/rpi-raspbian:stretch
 RUN [ "cross-build-start" ]
 
 RUN apt-get update && \
-    apt-get install -y  nano git openssl wget ca-certificates netcat libcurl4-openssl-dev php5 curl && \
+    apt-get install -y  nano git openssl wget ca-certificates netcat libcurl4-openssl-dev php curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Install domoticz
