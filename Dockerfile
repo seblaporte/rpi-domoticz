@@ -3,15 +3,7 @@ FROM resin/rpi-raspbian:stretch
 RUN [ "cross-build-start" ]
 
 RUN apt-get update && \
-    apt-get install -y  nano \
-                        git \
-                        openssl \
-                        wget \
-                        ca-certificates \
-                        netcat \
-                        libcurl4-openssl-dev \
-                        php5 \
-			curl && \
+    apt-get install -y  nano git openssl wget ca-certificates netcat libcurl4-openssl-dev php5 curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Install domoticz
@@ -41,7 +33,6 @@ RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
 
 RUN [ "cross-build-end" ]
 
-# HTTP port (web interface)
 EXPOSE 8080
 
 ENTRYPOINT ["/domoticz/domoticz", "-dbase", "/config/domoticz.db", "-log", "/config/domoticz.log"]
