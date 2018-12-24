@@ -1,4 +1,4 @@
-FROM resin/armv7hf-debian-qemu
+FROM resin/rpi-raspbian:stretch
 
 RUN [ "cross-build-start" ]
 
@@ -11,7 +11,8 @@ RUN apt-get update && \
                         netcat \
                         libcurl4-openssl-dev \
                         php5 \
-			curl
+			curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install domoticz
 RUN mkdir /domoticz && \
@@ -21,17 +22,19 @@ RUN mkdir /domoticz && \
     rm domoticz_linux_armv7l.tgz
 
 # Install Xiaomi Vacuum plugin
-RUN apt-get install -y python3 python3-dev python3-pip libffi-dev libssl-dev
+RUN apt-get update && \
+    apt-get install -y python3 python3-dev python3-pip libffi-dev libssl-dev && \
+    rm -rf /var/lib/apt/lists/*
 RUN pip3 install -U setuptools virtualenv
-RUN apt-get install build-essential
 RUN cd /domoticz/plugins && \
     git clone https://github.com/mrin/domoticz-mirobot-plugin.git xiaomi-mirobot && \
     cd /domoticz/plugins/xiaomi-mirobot && \
+    git checkout tags/0.1.3 && \
     virtualenv -p python3 .env && \
     . /domoticz/plugins/xiaomi-mirobot/.env/bin/activate && \
     pip3 install -r pip_req.txt
 
-# Installation de iSamsungTV
+# Install iSamsungTV
 RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
     chmod +x iSamsungTV && \
     mv iSamsungTV /usr/local/bin/
@@ -42,5 +45,4 @@ RUN [ "cross-build-end" ]
 EXPOSE 8080
 
 ENTRYPOINT ["/domoticz/domoticz", "-dbase", "/config/domoticz.db", "-log", "/config/domoticz.log"]
-
 CMD ["-www", "8080"]
