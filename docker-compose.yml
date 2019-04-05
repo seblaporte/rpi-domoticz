@@ -1,4 +1,4 @@
-version: '2'
+version: '3.2'
 
 networks:
   wan:
@@ -20,6 +20,7 @@ services:
       - ./data/config:/config
       - ./data/scripts/lua:/domoticz/scripts/lua
       - ./data/scripts/actions:/domoticz/scripts/actions
+      - ./data/zigate:/domoticz/plugins/Domoticz-Zigate/Data
     labels:
       - "traefik.enable=true"
       - "traefik.backend=domoticz"
@@ -29,9 +30,19 @@ services:
       - "traefik.frontend.auth.basic=${AUTH}"
     privileged: true
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
 
   miio-server:
-    image: ${MIIO-SERVER_IMAGE}
+    image: ${MIIO_SERVER_IMAGE}
     networks:
       - internal
     restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
