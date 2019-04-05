@@ -1,9 +1,9 @@
-FROM resin/rpi-raspbian:stretch
+FROM balenalib/raspberrypi3-debian:stretch
 
 RUN [ "cross-build-start" ]
 
 RUN apt-get update && \
-    apt-get install -y  nano git openssl wget ca-certificates netcat libcurl4-openssl-dev php curl && \
+    apt-get install -y  nano git openssl libusb-0.1-4 wget ca-certificates netcat libcurl4-openssl-dev php curl build-essential && \
     rm -rf /var/lib/apt/lists/*
 
 # Install domoticz
@@ -30,6 +30,11 @@ RUN cd /domoticz/plugins && \
 RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
     chmod +x iSamsungTV && \
     mv iSamsungTV /usr/local/bin/
+
+# Install Zigate plugin
+RUN cd /domoticz/plugins && \
+    git clone https://github.com/sasu-drooz/Domoticz-Zigate.git && \
+    chmod +x Domoticz-Zigate/plugin.py
 
 RUN [ "cross-build-end" ]
 
