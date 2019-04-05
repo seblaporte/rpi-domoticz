@@ -36,7 +36,7 @@ RUN cd /domoticz/plugins && \
     chmod +x Domoticz-Zigate/plugin.py
 
 # Install Hyperion plugin
-ADD Hyperion /domoticz/plugins/
+COPY Hyperion /domoticz/plugins/Hyperion
 RUN chmod +x /domoticz/plugins/Hyperion/plugin.py
 
 RUN [ "cross-build-end" ]
