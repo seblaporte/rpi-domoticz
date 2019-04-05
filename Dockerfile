@@ -32,7 +32,8 @@ RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
     mv iSamsungTV /usr/local/bin/
 
 # Install Zigate plugin
-RUN git clone https://github.com/sasu-drooz/Domoticz-Zigate.git && \
+RUN cd /domoticz/plugins && \
+    git clone https://github.com/sasu-drooz/Domoticz-Zigate.git && \
     chmod +x Domoticz-Zigate/plugin.py
 
 RUN [ "cross-build-end" ]
