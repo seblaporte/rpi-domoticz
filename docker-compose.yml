@@ -21,6 +21,9 @@ services:
       - ./data/scripts/lua:/domoticz/scripts/lua
       - ./data/scripts/actions:/domoticz/scripts/actions
       - ./data/zigate:/domoticz/plugins/Domoticz-Zigate/Data
+    devices:
+      - "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0:/dev/ttyUSBZigate"
+      - "/dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1XPT0RY-if00-port0:/dev/ttyUSBRfxcom"
     labels:
       - "traefik.enable=true"
       - "traefik.backend=domoticz"
@@ -28,7 +31,7 @@ services:
       - "traefik.port=8080"
       - "traefik.frontend.rule=Host:${HOSTNAME}"
       - "traefik.frontend.auth.basic=${AUTH}"
-    privileged: true
+        #privileged: true
     restart: always
     logging:
       driver: "json-file"
