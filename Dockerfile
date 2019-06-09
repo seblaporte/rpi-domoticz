@@ -26,15 +26,18 @@ RUN cd /domoticz/plugins && \
     . /domoticz/plugins/xiaomi-mirobot/.env/bin/activate && \
     pip3 install -r pip_req.txt
 
-# Install iSamsungTV
-RUN wget https://github.com/Tristan79/iSamsungTV/raw/master/pi/iSamsungTV && \
-    chmod +x iSamsungTV && \
-    mv iSamsungTV /usr/local/bin/
+# Install iSamsungTV (from https://github.com/Tristan79/iSamsungTV)
+COPY iSamsungTV/iSamsungTV /usr/local/bin/
+RUN chmod +x /usr/local/bin/iSamsungTV
 
 # Install Zigate plugin
 RUN cd /domoticz/plugins && \
     git clone https://github.com/sasu-drooz/Domoticz-Zigate.git && \
     chmod +x Domoticz-Zigate/plugin.py
+
+# Install Hyperion plugin
+COPY Hyperion /domoticz/plugins/Hyperion
+RUN chmod +x /domoticz/plugins/Hyperion/plugin.py
 
 RUN [ "cross-build-end" ]
 
